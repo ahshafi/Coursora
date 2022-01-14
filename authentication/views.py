@@ -10,7 +10,7 @@ from util.fetcher import *
 def register(request):
     if request.method=='POST':
         name, email, password=multiget(request.POST, ['name', 'email', 'password'])
-        multiset(request.POST, ['name', 'email', 'password'], [name, email, password])
+        multiset(request.session, ['name', 'email', 'password'], [name, email, password])
         with connections['coursora_db'].cursor() as db:
             db.execute('''INSERT INTO "User"("Name", "Email", "Password")
                         VALUES(%s, %s, %s)''', [name, email, password])
