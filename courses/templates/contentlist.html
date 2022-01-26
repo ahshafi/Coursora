@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contents</title>
+</head>
+<body>
+  <h1>Content List</h1>
+    {% for c in content %}        
+        
+       <h2><a href="view/{{c.0}}">{{c.1}}</a></h2>
+       <h4>Summary : {{c.2}}   &ensp;&ensp;&ensp;&ensp;  Lecture Duration: {{c.3 }} minutes</h4><br>
+       <br><br>       
+    {% endfor %} 
+</body>
+</html>

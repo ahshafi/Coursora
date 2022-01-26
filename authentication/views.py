@@ -5,6 +5,9 @@ from django.shortcuts import redirect
 from util.fetcher import *
 # Create your views here.
 
+def home(request):
+    return render(request,'home.html')
+
 
 def register(request):
     if request.method=='POST':

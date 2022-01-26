@@ -57,7 +57,7 @@ ROOT_URLCONF = 'coursora.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'courses'/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,9 +86,9 @@ DATABASES = {
     },
     'coursora_db': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'orcl',
+        'NAME': 'dbproject',
         'USER': 'COURSORA',
-        'PASSWORD': 'coursora',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '1521',
     }
