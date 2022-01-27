@@ -1,6 +1,1 @@
-l1 = [('1',4),('2',5),('3',6)]
-rows=[(1,2,3),(4,5,6)]
-ld = [
-  i[1] for i in l1
-]
-print(ld)
+print([i for i in range(1,6) if i%2==0])
