@@ -86,11 +86,9 @@ DATABASES = {
     },
     'coursora_db': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'orcl',
-        'USER': 'COURSORA',
-        'PASSWORD': 'coursora',
-        'HOST': 'localhost',
-        'PORT': '1521',
+        'NAME': '103.94.135.201:1521/orclcdb.localdomain',
+        'USER': 'TFUSER2',
+        'PASSWORD': 'aa342301',
     }
 }
 
