@@ -91,7 +91,7 @@ def profile(request):
                 db.execute('''SELECT * FROM "Course"
                             WHERE "ID" in(
                                 select "COURSE_ID" from "Teaches"
-                                where "TEACHER_ID"=%s
+                                where "INSTRUCTOR_ID"=%s
                             ) ''', [instructor['ID']])
                 courses=dictfetchall(db)
                 return render(request, 'authentication/teacher_profile.html', {'user':user,'instructor':instructor,'courses':courses})            

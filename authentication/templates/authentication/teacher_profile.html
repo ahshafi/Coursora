@@ -13,8 +13,13 @@
 
     Active Courses:<br>
     {% for course in courses %}        
-        {{course.Name}}<br>           
+        <h2><a href="contentlist_instructor/{{course.ID}}/">{{course.Name}}</a></h2><br>           
     {% endfor %}
+    <a href='add_course/'>
+        <button>
+            Add Course
+        </button>
+    </a>
     <form action="logout" method="post">
         {% csrf_token %}
         <input type="submit" value="Logout">
