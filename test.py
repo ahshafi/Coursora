@@ -1,6 +1,2 @@
-l1 = [('1',4),('2',5),('3',6)]
-rows=[(1,2,3),(4,5,6)]
-ld = [
-  i[1] for i in l1
-]
-print(ld)
+str='ol'
+print(str is 'gola')

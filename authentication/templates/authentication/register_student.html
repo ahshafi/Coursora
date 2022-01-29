@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="post">
+    <form action="/coursora/register_student/" method="post">
         {% csrf_token %}
         <label for="name">Name:</label>
         <input type="text" id="name" name="name"><br>
@@ -15,8 +15,8 @@
         <input type="text" id="email" name="email"><br>
         <label for="password">Password:</label>
         <input type="text" id="password" name="password"><br>
-        <label for="Class">Class:</label>
-        <input type="text" id="Class" name="Class"><br>
+        <label for="klass">Class:</label>
+        <input type="text" id="klass" name="klass"><br>
         <input type="submit" value="register">        
         
     </form>

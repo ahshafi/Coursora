@@ -7,13 +7,13 @@
     <title>Student</title>
 </head>
 <body>
-    <p>Name: {{ info1.0.1 }}  </p>
-    <p>Email: {{ info1.0.2 }}  </p>
-    <p>Specialization: {{ info2.0.1 }}  </p>
+    <p>Name: {{ user.Name }}  </p>
+    <p>Email: {{ user.Email }}  </p>
+    <p>Class: {{ student.Class }}  </p>
 
-     Active Courses:<br>
-    {% for c in info3 %}        
-        {{c.1}}<br>           
+    Registered Courses:<br>
+    {% for course in courses %}        
+        {{course.Name}}<br>           
     {% endfor %}
     <form action="logout" method="post">
         {% csrf_token %}
