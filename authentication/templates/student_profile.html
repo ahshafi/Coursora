@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student</title>
 </head>
 <body>
-    <p>Name: {{ name }}  </p>
-    
+    <p>Name: {{ info1.0.1 }}  </p>
+    <p>Email: {{ info1.0.2 }}  </p>
+    <p>Class: {{ info2.0.1 }}  </p>
+
+    Registered Courses:<br>
+    {% for c in info3 %}        
+        {{c.1}}<br>           
+    {% endfor %}
     <form action="logout" method="post">
         {% csrf_token %}
         <input type="submit" value="Logout">

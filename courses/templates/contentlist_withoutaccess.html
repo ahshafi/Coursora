@@ -8,13 +8,15 @@
 </head>
 <body>
   <h1>Content List</h1>&ensp;&ensp; &ensp; &ensp; &ensp; &ensp;
-     <h1>Registered</h1>
-     <h1>
-         <button>Course Progress</button>
-     </h1>
-    {% for c in content %}      
+   <button><a href="">Register</a></button>
+   <form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Register">
+   </form>
+   You must register to proceed  
+    {% for c in content %}        
         
-       <h2><a href="view/{{c.0}}">{{c.1}}</a></h2>
+       <h2><a href="">{{c.1}}</a></h2>
        <h4>Summary : {{c.2}}   &ensp;&ensp;&ensp;&ensp;  Lecture Duration: {{c.3 }} minutes</h4><br>
        <br><br>       
     {% endfor %} 
