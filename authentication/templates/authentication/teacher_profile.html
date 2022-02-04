@@ -13,7 +13,7 @@
 
     Active Courses:<br>
     {% for course in courses %}        
-        <h2><a href="contentlist_instructor/{{course.ID}}/">{{course.Name}}</a></h2><br>           
+        <h2><a href="{% url 'courses:show_contentlist' course_id=course.ID %}">{{course.Name}}</a></h2><br>           
     {% endfor %}
     <a href='add_course/'>
         <button>

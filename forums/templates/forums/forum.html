@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script type="text/javascript">
+        // function func()
+        // {
+        //     var x=JSON.parse("{{forum_ids|escapejs}}");
+        //     //document.write(x);
+        //     for(var key in x){
+        //         document.write(x[key]);
+        //     }
+        // }
+        
+        function getNode(user, comment, margin)
+        {
+            var node=document.createElement("div");
+            node.style.margin=`0px 0px 0px ${margin}px`;
+            node.innerHTML=`<h3>${user}: </h3><p>${comment}</p><br>`;
+            reply_button=document.createElement("button");
+            reply_button.type="button";
+            reply_button.addEventListener("click", function(){
+                                                console.log("hola");
+                                                this.remove();
+                                            });
+            reply_button.innerHTML="reply";
+            node.appendChild(reply_button);
+            return node;
+        }
+        function thread()
+        {
+            document.body.appendChild(getNode("hola", "bunny", 40));
+            console.log("hola");
+        }  
+        window.thread();
+    </script> 
+</body>
+
+</html>

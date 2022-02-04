@@ -9,10 +9,10 @@
 <body>
     {{Name}}
     <h1>CourseList</h1>   
-    {% for c in course %}        
+    {% for course in courses %}        
         
-       <h2><a href="contentlist/{{c.0}}/">{{c.1}}</a></h2>
-       <h4>{{c.2}}   &ensp;&ensp;&ensp;&ensp;  Level: {{c.3 }}</h4><br>
+       <h2><a href="{% url 'courses:show_contentlist' course_id=course.ID %}">{{course.Name}}</a></h2>
+       <h4>{{course.Topic}}   &ensp;&ensp;&ensp;&ensp;  Level: {{course.Level }}</h4><br>
        <br><br>       
     {% endfor %}  
 </body>

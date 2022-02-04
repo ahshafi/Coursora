@@ -14,13 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from tkinter.font import names
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-
+app_name='coursora'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('coursora/', include('authentication.urls')),    
-    path('courses/', include('courses.urls')),
-    path('coursora/', include('courses.urls')), 
+    path('coursora/', include('courses.urls') ), 
+    path('coursora/', include('exams.urls') ),
+    path('coursora/', include('forums.urls') ),
 ]

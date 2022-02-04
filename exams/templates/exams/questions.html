@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action='/coursora/exam/{{exam_id}}/' method='post'>
+    {% csrf_token %}
+        {% for question in questions %}
+            <h3>{{question.QUESTION}}</h3>
+            <label for="{{question.ID}}_1">{{question.OPTION1}}</label><br>
+            <input type="radio"  id="{{question.ID}}_1" name="{{question.ID}}" value="{{question.OPTION1}}"><br>
+            <label for="{{question.ID}}_2">{{question.OPTION2}}</label><br>
+            <input type="radio"  id="{{question.ID}}_2" name="{{question.ID}}" value="{{question.OPTION2}}"><br>
+            <label for="{{question.ID}}_3">{{question.OPTION3}}</label><br>
+            <input type="radio"  id="{{question.ID}}_3" name="{{question.ID}}" value="{{question.OPTION3}}"><br>
+            <label for="{{question.ID}}_4">{{question.OPTION4}}</label><br>
+            <input type="radio" id="{{question.ID}}_4" name="{{question.ID}}" value="{{question.OPTION4}}"><br>
+            
+            
+    {% endfor %} 
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

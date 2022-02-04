@@ -7,6 +7,20 @@
     <title>Document</title>
 </head>
 <body>
-    <input type="text" id="klass" name="klass"><br>
+    <template>
+        <p>x</p>
+    </template>
+    <script type="text/javascript" >  
+        function showcommentform() { 
+        var x=2;
+        var temp=document.getElementsByTagName('template')[0]; 
+        var data=temp.clone.cloneNode(true);
+        document.body.appendChild(data);
+        }  
+        
+        </script>  
+        
+        <button onclick="showcommentform()">Show hidden content</button>
+        
 </body>
 </html>

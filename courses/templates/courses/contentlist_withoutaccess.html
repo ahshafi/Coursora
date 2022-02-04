@@ -8,8 +8,7 @@
 </head>
 <body>
   <h1>Content List</h1>&ensp;&ensp; &ensp; &ensp; &ensp; &ensp;
-   <button><a href="">Register</a></button>
-   <form action="" method="POST">
+   <form action="/coursora/courselist/{{course_id}}/reg/" method="POST">
     {% csrf_token %}
     <input type="submit" value="Register">
    </form>

@@ -20,7 +20,10 @@ def register_student(request):
             db.execute('''SELECT ID FROM "User"
                         WHERE "Name"=%s AND "Password"=%s ''', [name, password])
             id=dictfetchone(db)['ID']
-            request.session['id']=id;          
+            request.session['id']=id
+            request.session['name']=name; 
+            request.session['password']=password; 
+            request.session['role']='student';         
             db.execute('''INSERT INTO "Student"("ID", "Class")
                         VALUES(%s, %s)''', [id,klass])
             return redirect('/coursora/profile/')
@@ -64,7 +67,18 @@ def login(request):
                 instructor=dictfetchone(db)
                 if (instructor is not None) and instructor['STATUS']!='approved':
                     return HttpResponse('Please wait for admin approval')
+                
+                db.execute('''SELECT * FROM "Instructor" 
+                            WHERE "ID"=%s''', [user['ID']])
+                role=db.fetchone()
+                if role is None:
+                    request.session['role']='student'
+                else :
+                    request.session['role']='instructor'
+
                 request.session['id']=user['ID']
+                request.session['name']=user['Name']
+                request.session['password']=user['Password']
                 return redirect('/coursora/profile/')
             else:
                 return redirect('/coursora/login/')
@@ -100,8 +114,8 @@ def profile(request):
             elif student is not None :
                 db.execute('''SELECT * FROM "Course"
                     WHERE "ID" in(
-                        select "Course_ID" from "Course_Registration"
-                        where "Student_ID"=%s
+                        select "COURSE_ID" from "COURSE_REGISTRATION"
+                        where "STUDENT_ID"=%s
                     ) ''', [student['ID']])
                 courses=dictfetchall(db)
                 return render(request, 'authentication/student_profile.html',{'user':user,'student':student,'courses':courses})
