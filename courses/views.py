@@ -24,7 +24,7 @@ def course_reg(request,course_id):
 def show_contentlist(request,course_id):   
     with connections['coursora_db'].cursor() as c:
         
-        c.execute('''SELECT ID,Title,SUMMARY,DURATION from "CONTENT" where "Course_ID"=%s ''',[course_id])
+        c.execute('''SELECT ID,Title,SUMMARY,DURATION from "CONTENT" where "COURSE_ID"=%s ''',[course_id])
         content=c.fetchall() 
         c.execute('''SELECT ID FROM "User"
                         WHERE "Name"=%s AND "Password"=%s ''', [request.session['name'], request.session['password']])

@@ -61,17 +61,17 @@ def login(request):
             db.execute('''SELECT * FROM "User"
                         WHERE "Name"=%s AND "Password"=%s ''', [name, password])
             user = dictfetchone(db)
-            if user is not None:
+            if user:
                 db.execute('''SELECT * FROM "Instructor"
                         WHERE "ID"=%s ''', [user['ID']])
                 instructor=dictfetchone(db)
-                if (instructor is not None) and instructor['STATUS']!='approved':
+                if instructor and instructor['STATUS']!='approved':
                     return HttpResponse('Please wait for admin approval')
                 
                 db.execute('''SELECT * FROM "Instructor" 
                             WHERE "ID"=%s''', [user['ID']])
                 role=db.fetchone()
-                if role is None:
+                if not role:
                     request.session['role']='student'
                 else :
                     request.session['role']='instructor'

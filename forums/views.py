@@ -1,6 +1,7 @@
 from json import dump, dumps
 import json
 from django.db import connections
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from util.fetcher import dictfetchall
@@ -23,3 +24,5 @@ def forum(request, forum_id):
 
         return render(request, 'forums/forum.html',{'context': json.dumps(context)})
     
+def hola(request):
+    return HttpResponse("ato")

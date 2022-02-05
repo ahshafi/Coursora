@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    
+   
     <script type="text/javascript">
         // function func()
         // {
@@ -23,12 +23,29 @@
             var node=document.createElement("div");
             node.style.margin=`0px 0px 0px ${margin}px`;
             node.innerHTML=`<h3>${user}: </h3><p>${comment}</p><br>`;
+            reply_form=document.createElement("form");
+            reply_form.method="post";
+            reply_form.id="hola_form";
             reply_button=document.createElement("button");
-            reply_button.type="button";
-            reply_button.addEventListener("click", function(){
-                                                console.log("hola");
-                                                this.remove();
-                                            });
+            reply_button.type="submit";
+            reply_form.appendChild(reply_button);
+            $("#hola_form").submit(function(e){
+                $.ajax({
+                        url: '/coursora/hola/',
+                        type: 'POST', // This is the default though, you don't actually need to always mention it
+                        data: {
+                            'username': 'shafi',
+                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                        },
+                        success: function(data) {
+                            alert(data);
+                        },
+                        failure: function(data) { 
+                            alert('Got an error dude');
+                        }
+                });
+                event.preventDefault();
+            });
             reply_button.innerHTML="reply";
             node.appendChild(reply_button);
             return node;
@@ -40,6 +57,7 @@
         }  
         window.thread();
     </script> 
+    
 </body>
 
 </html>
