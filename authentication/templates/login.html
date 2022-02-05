@@ -1,19 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="post">
+    <!DOCTYPE html>  
+<html lang="en">  
+  
+<head>  
+    <title>Ajay malik bootstrap example</title>  
+    <meta charset="utf-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel="stylesheet" href="https//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
+    <script src="https//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>  
+    <script src="https//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
+</head>  
+  
+<body> 
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="">Coursora</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/coursora/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="http://127.0.0.1:8000/courses/">Courses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="http://127.0.0.1:8000/coursora/login/">Login</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Register
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="http://127.0.0.1:8000/coursora/register_student/">As A Student</a></li>
+                  <li><a class="dropdown-item" href="http://127.0.0.1:8000/coursora/register_teacher/">As A Teacher</a></li>                  
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <form class="form-signin" action="" method="POST" >
+
         {% csrf_token %}
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br>
-        <label for="password">Password:</label>
-        <input type="text" id="password" name="password"><br>
-        <input type="submit" value="login">
-    </form>
+        <div class="container " >
+      
+          {% if error %}
+          <div style="padding-top: 50px;"></div>
+          <div class="alert alert-danger" style="padding-left: 400px;padding-top: 50;">{{error}}</div>
+          {% endif %}
+        
+      
+          <div class="row pb-3 pt-5" style="padding-left: 400px;">
+      
+            <div class="col-md-4">
+          <div class="text-center mb-4"><h1 class="h3 mb-3 font-weight-normal" ><b>Log In</b></h1></div>
+        
+            </div>
+          </div>
+          
+      
+          
+          <div class="row pb-3" style="padding-left: 340px;padding-bottom: 20px;">
+          <div class="col-md-6">
+            <input type="text" id="name" name="name" class="form-control" placeholder="User Name" required autofocus>
+          <label for="email_or_name" class="sr-only">User Name</label>
+          </div>
+          </div>
+          
+          <div class="row pb-3" style="padding-left: 340px;padding-bottom: 20px;">
+        
+            <div class="col-md-6">
+        
+              <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            <label for="inputPassword" class="sr-only">Password</label>
+        
+            </div>
+            
+          </div>
+          
+          
+         
+          
+          <div class="row  pt-1" style="padding-left: 340px;">
+            
+            <div class="col-md-6" >
+            
+             
+          <button class="btn btn-lg btn-outline-primary btn-block mb-5" type="submit" value="login">Log In</button> 
+            </div>
+          </div>
+      
+        </div>
+       
+        </form> 
+    
 </body>
 </html>
