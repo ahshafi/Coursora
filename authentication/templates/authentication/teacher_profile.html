@@ -1,28 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student</title>
 </head>
 <body>
-    <p>Name: {{ user.Name }}  </p>
-    <p>Email: {{ user.Email }}  </p>
-    <p>Specialization: {{ instructor.Specialization}}  </p>
-
-    Active Courses:<br>
-    {% for course in courses %}        
-        <h2><a href="{% url 'courses:show_contentlist' course_id=course.ID %}">{{course.Name}}</a></h2><br>           
-    {% endfor %}
-    <a href='add_course/'>
-        <button>
-            Add Course
-        </button>
-    </a>
-    <form action="logout" method="post">
-        {% csrf_token %}
-        <input type="submit" value="Logout">
-    </form>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="">Coursora</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/coursora/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="http://127.0.0.1:8000/coursora/courselist/">Courses</a>                
+              </li>
+              <div class="container-fluid">
+                <form class="d-flex" action="logout" method="post">
+                    {% csrf_token %}                  
+                  <button class="btn btn-outline-success" type="submit" value="Logout">Logout</button>
+                </form>
+              </div>                      
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div  style="width:400px; margin:0 auto;">
+        <h2>Instructor Profile</h2><br>
+      <img src="anonymous_user.jfif" alt="Flowers in China" width="460" height="345"><br><br>
+    <p><h3 style="color:blue">{{ user.Name }} </h3> </p>    
+    <p><h5>Email: {{ user.Email }}  </h5></p>
+    <p><h5>Specialization: {{ instructor.Specialization }} </h5></p>
+    </div>
+    <h3>   Active Courses:</h3><br>
+  
+    {% for course in courses %}
+    <div class="list-group">        
+        <a href="/coursora/courselist/{{course.ID}}/contentlist/" class="list-group-item list-group-item-action"><b style="color:blue"><h3>{{course.Name}}</h3></b></a>   
+       
+      </div>         
+    {% endfor %}    
+    <a class="btn btn-primary" href='add_course/' role="button">Add Course</a>  
 </body>
 </html>

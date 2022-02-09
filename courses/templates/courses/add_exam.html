@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="Title">Exam Title:</label>
+        <input type="text" id="Title" name="Title"><br>
+        <label for="Total_Marks">Total Marks:</label>
+        <input type="text" id="Total_Marks" name="Total_Marks"><br>
+        <label for="Exam_Time">Exam Time:</label>
+        <input type="text" id="Exam_Time" name="Exam_Time"><br>       
+        <input type="submit" value="Create Exam">        
+    </form>
+</body>
+</html>
