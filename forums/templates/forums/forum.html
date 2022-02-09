@@ -4,58 +4,103 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="csrf-token" content="{{ csrf_token }}" /> -->
     <title>Document</title>
 </head>
 <body>
-   
+    <div id="main_div">
+        <textarea id="root_comment"></textarea><br>
+        <button onclick="addComment()">Comment</button>
+    </div>
     <script type="text/javascript">
-        // function func()
-        // {
-        //     var x=JSON.parse("{{forum_ids|escapejs}}");
-        //     //document.write(x);
-        //     for(var key in x){
-        //         document.write(x[key]);
-        //     }
-        // }
         
+        var tree, comment_dict, users, forum_id;
+        var vis={};
         function getNode(user, comment, margin)
         {
             var node=document.createElement("div");
             node.style.margin=`0px 0px 0px ${margin}px`;
-            node.innerHTML=`<h3>${user}: </h3><p>${comment}</p><br>`;
-            reply_form=document.createElement("form");
-            reply_form.method="post";
-            reply_form.id="hola_form";
+            content=document.createElement("p");
+            content.innerHTML=`${user["Name"]}: ${comment["DESCRIPTION"]}`;
+            reply_text=document.createElement("textarea");
+            reply_text.style.visibility="hidden";
             reply_button=document.createElement("button");
             reply_button.type="submit";
-            reply_form.appendChild(reply_button);
-            $("#hola_form").submit(function(e){
-                $.ajax({
-                        url: '/coursora/hola/',
-                        type: 'POST', // This is the default though, you don't actually need to always mention it
-                        data: {
-                            'username': 'shafi',
-                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                        },
-                        success: function(data) {
-                            alert(data);
-                        },
-                        failure: function(data) { 
-                            alert('Got an error dude');
-                        }
-                });
-                event.preventDefault();
-            });
             reply_button.innerHTML="reply";
+            reply_button.txt=reply_text;
+            node.appendChild(content);
+            node.appendChild(reply_text);
+            node.appendChild(document.createElement("br"));
             node.appendChild(reply_button);
+            node.appendChild(document.createElement("br"));
+
+            reply_button.addEventListener("click",function(){
+                if(this.txt.style.visibility=="hidden"){
+                     this.txt.style.visibility="visible";
+                }
+                else {
+                    var request = new XMLHttpRequest();
+                    request.onload = function () {
+                        if (request.readyState === request.DONE) {
+                            if (request.status === 200) {
+                                window.location.href=request.responseText;
+                            }
+                        }
+                    };
+                    request.open('POST', '/coursora/reply/');
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    request.send(JSON.stringify({"parent_comment_id": comment.ID, "forum_id": comment.FORUM_ID, "text":this.txt.value}))
+                }
+            });
             return node;
+        }
+        function addComment()
+        {
+            var request = new XMLHttpRequest();
+            request.onload = function () {
+                if (request.readyState === request.DONE) {
+                    if (request.status === 200) {
+                        window.location.href=request.responseText;
+                    }
+                }
+            };
+            request.open('POST', '/coursora/reply/');
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(JSON.stringify({"forum_id": forum_id, "text":document.getElementById("root_comment").value}))
+        }
+        function dfs(cid, margin)
+        {
+            //console.log(cid);
+            vis[cid]=1;
+            document.getElementById("main_div")
+            .appendChild(getNode(users[comment_dict[cid].USER_ID], comment_dict[cid], margin));
+            for (let id in tree[cid]){
+                dfs( tree[cid][id], margin+30);
+            }
         }
         function thread()
         {
-            document.body.appendChild(getNode("hola", "bunny", 40));
-            console.log("hola");
+            var context=JSON.parse("{{context|escapejs}}");
+            tree=context["tree"];
+            comment_dict=context["comment_dict"];
+            users=context["users"];
+            forum_id=context["forum_id"];
+            //console.log(tree);
+            //console.log(comment_dict);
+            //console.log(users);
+            for (let cid in comment_dict){
+                //console.log(cid);
+                //dfs(cid,0);
+                if(vis[cid]==undefined){
+                    dfs(cid,0);
+                }
+            }
         }  
         window.thread();
+
+        
+
+        
     </script> 
     
 </body>
