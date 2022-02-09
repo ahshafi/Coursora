@@ -5,5 +5,5 @@ from forums.views import *
 
 urlpatterns = [
     path('forum/<int:forum_id>/', forum, name='forum'),
-    
+    path('reply/', reply, name='reply'),
 ]
