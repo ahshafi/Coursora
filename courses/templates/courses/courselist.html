@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,22 +12,70 @@
     <title>All Courses</title>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand">Navbar</a>
-          <form class="d-flex" action="" method="post">
-            {% csrf_token %}            
-            <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" id="Search" name="Search">
-            <button class="btn btn-outline-success" type="submit" ><label for="Search">Search </label></button>            
-          </form>
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/coursora/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/profile/">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/profile/logout">Logout</a>
+              </li>            
+              
+            </ul>
+            <form class="d-flex" action="" method="post">
+              {% csrf_token %}
+              <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" id="Search" name="Search">
+              <button class="btn btn-outline-success" type="submit" ><label for="Search">Search </label></button> 
+            </form>
+          </div>
         </div>
       </nav>    
-    <h1>CourseList</h1>   
-    {% for course in courses %}        
+
+    <h1>&ensp;CourseList</h1>   
+    
+    
+    <ul class="list-group list-group-flush mydiv">
+      {% for course in courses %}
+      <li class="list-group-item list-group-item-action">
+      <div class="row  mydiv " onclick="window.location='/coursora/courselist/{{course.ID}}/contentlist/';" style="cursor:pointer;"  >
+          <div class="col-md-1">
+              <img src="{% static 'images/course.png'%}" width="80px" style="border-radius: 50%;">
+          </div>
+          <div class="col-md-10" style="padding-top: 0px;">
+            <div class="row  pt-2" >
+              <div class="col-6">
+                  <h4 style="color:#069">Name: {{course.Name}}</h4>
+              </div>
+  
+          </div>
+              <div class="row  pt-2" >
+                  <div class="col-6">
+                      <h6 style="color:#069">Topic : {{course.Topic}}</h6>
+                  </div>
+      
+              </div>              
+              <div class="row  pt-2" >
+                  <div class="col-6">
+                      <h6 style="color:#069">Level : {{course.Level}}</h6>
+                  </div>
+      
+              </div>
+              
+      
+          </div>
         
-       <h2><a href="{% url 'courses:show_contentlist' course_id=course.ID %}">{{course.Name}}</a></h2>
-       <h4>{{course.Topic}}   &ensp;&ensp;&ensp;&ensp;  Level: {{course.Level }}</h4><br>
-       <br><br>       
-    {% endfor %}  
+          </div>
+        </li>
+        {% endfor %}
+        </ul>
 </body>
 </html>

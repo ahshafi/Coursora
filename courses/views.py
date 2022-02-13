@@ -37,7 +37,7 @@ def show_contentlist(request,course_id):
          if x:
              creator=1 # if a teacher has entered to create a lecture
 
-    with connections['coursora_db'].cursor() as c:
+    with connections['coursora_db'].cursor() as c:        
         
         c.execute('''SELECT ID,Title,SUMMARY,DURATION from "CONTENT" where "COURSE_ID"=%s ''',[course_id])
         content=c.fetchall() 

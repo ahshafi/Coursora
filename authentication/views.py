@@ -70,15 +70,20 @@ def login(request):
                 
                 db.execute('''SELECT * FROM "Instructor" 
                             WHERE "ID"=%s''', [user['ID']])
-                role=db.fetchone()
-                if role is None:
-                    request.session['role']='student'
-                else :
+                role1=db.fetchone()
+                db.execute('''SELECT * FROM "Student" 
+                            WHERE "ID"=%s''', [user['ID']])
+                role2=db.fetchone()
+                if role1 is None and role2 is None:
+                    request.session['role']='admin'
+                elif role2 is None :
                     request.session['role']='instructor'
+                else :
+                    request.session['role']='student'
 
                 request.session['id']=user['ID']
                 request.session['name']=user['Name']
-                request.session['password']=user['Password']
+                request.session['password']=user['Password']                
                 return redirect('/coursora/profile/')
             else:
                 return redirect('/coursora/login/')
@@ -119,6 +124,12 @@ def profile(request):
                     ) ''', [student['ID']])
                 courses=dictfetchall(db)
                 return render(request, 'authentication/student_profile.html',{'user':user,'student':student,'courses':courses})
+            else :
+                db.execute('''SELECT * FROM "Instructor"
+                    WHERE "STATUS"<>%s
+                    ''',['approved'])
+                teachers=dictfetchall(db)
+                return render(request, 'authentication/Admin_approval.html',{'teachers':teachers})
             
 
 def logout(request):
@@ -126,5 +137,11 @@ def logout(request):
     request.session.clear()
     return redirect('/coursora/login/')
     
-
+def accept_instructor(request,instructor_id):
+ with connections['coursora_db'].cursor() as db:
+    db.execute('''update "Instructor"
+                  set "STATUS"=%s
+                  where "ID"=%s''', ['approved', instructor_id])
+    
+    return redirect('/coursora/profile/')
     

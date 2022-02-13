@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,13 +38,18 @@
         </div>
       </nav>
       <br><br>
+      <center>
      <div  style="width:400px; margin:0 auto;">
-        <h2>Student Profile</h2><br>
-      <img src="img_chania.jpg" alt="Flowers in China" width="460" height="345"><br><br>
+        <h2>Student Profile</h2><br> </div>     
+      <div class="col-md-1">
+      <img src="{% static 'images/anony.png'%}" width="120px" style="border-radius: 50%;">
+      </div>
+    
     <p><h3 style="color:blue">{{ user.Name }} </h3> </p>    
     <p><h5>Email: {{ user.Email }}  </h5></p>
     <p><h5>Class: {{ student.Class }} </h5></p>
-    </div>
+    
+  </center>
     <h3>   Registered Courses:</h3><br>
   
     {% for course in courses %}

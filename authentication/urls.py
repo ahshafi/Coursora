@@ -10,5 +10,6 @@ urlpatterns = [
     path('register_teacher/', register_teacher, name='register_teacher'),
     path('profile/', profile, name='profile'),
     path('profile/logout', logout, name='logout'),
+    path('acc_ins/<int:instructor_id>/', accept_instructor, name='accept_instructor'),
     path('profile/', include('courses.urls'))
 ]
