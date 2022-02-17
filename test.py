@@ -1,2 +1,4 @@
-str='ol'
-print(str is 'gola')
+temp={
+}
+temp['1']=1
+print(temp[1])
