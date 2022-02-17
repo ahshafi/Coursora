@@ -35,9 +35,31 @@
           </div>
         </div>
       </nav>
-      <h3>Waiting for Approval</h3>
-      {% for t in teachers %}
-        {{t.ID}} &ensp;<a class="btn btn-primary" href="/coursora/acc_ins/{{t.ID}}" role="button">Approve</a>
+      <br>
+      <center><h3>Waiting for Approval</h3></center><br>
+      
+      <h5>
+      <ul class="list-group">
+
+      {% for t2 in teachers2 %}
+        
+      <li class="list-group-item">
+
+        &emsp;Name :  {{t2.Name}}<br>
+        &emsp;Email :  {{t2.Email}}<br>       
+        
+        {% for t1 in teachers1 %}
+        {% if t2.Id == t1.Id %}
+        &emsp;Specialization :  {{t1.Specialization}}<br>
+        {% endif %}
+        {% endfor %}
+        <br>
+        &emsp;<a class="btn btn-primary" href="/coursora/acc_ins/{{t2.ID}}" role="button">Approve</a>
+      </li>
       {% endfor %}
+    </ul>
+    </h5>
+    <br>
+      
 </body>
 </html>

@@ -127,9 +127,18 @@ def profile(request):
             else :
                 db.execute('''SELECT * FROM "Instructor"
                     WHERE "STATUS"<>%s
+                    order by "ID"
                     ''',['approved'])
-                teachers=dictfetchall(db)
-                return render(request, 'authentication/Admin_approval.html',{'teachers':teachers})
+                t1=dictfetchall(db)
+                db.execute('''SELECT * FROM "User"
+                    WHERE ID in(
+                        select ID from "Instructor"
+                        where "STATUS"<>%s
+                        )
+                        order by "ID"
+                    ''',['approved'])
+                t2=dictfetchall(db)
+                return render(request, 'authentication/Admin_approval.html',{'teachers1':t1,'teachers2':t2})
             
 
 def logout(request):

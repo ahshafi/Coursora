@@ -13,13 +13,13 @@ def show_courselist(request):
          c.execute('SELECT * from "Course" where "Name" like %s ',[str])
          courses=dictfetchall(c)       
          #return HttpResponse(course)
-         return render(request,'courses/courselist.html',{'courses':courses,'Name':request.session['name']})
+         return render(request,'courses/courselist.html',{'courses':courses})
     else:      
       with connections['coursora_db'].cursor() as c:
         c.execute('SELECT * from "Course"')
         courses=dictfetchall(c)       
         #return HttpResponse(course)
-        return render(request,'courses/courselist.html',{'courses':courses,'Name':request.session['name']})  
+        return render(request,'courses/courselist.html',{'courses':courses})  
 
 def course_reg(request,course_id):
     if  request.session['role']=='instructor':
@@ -71,7 +71,7 @@ def show_content_view(request,course_id,lec_id):
              creator=1 # if a teacher has entered to create a lecture  
 
     with connections['coursora_db'].cursor() as c:
-        c.execute('''SELECT ID,Title,"Main_Content" from "CONTENT" where ID=%s ''',[lec_id])
+        c.execute('''SELECT * from "CONTENT" where ID=%s ''',[lec_id])
         content=c.fetchall()
         c.execute('''SELECT * from "EXAM" where "CONTENT_ID"=%s ''',[lec_id])
         content1=c.fetchall()

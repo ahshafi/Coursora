@@ -11,30 +11,70 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/coursora/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/courselist/">Courses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/profile/">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/profile/logout">Logout</a>
+              </li>         
+              
+            </ul>
+            
+          </div>
+        </div>
+      </nav>
+    <br>
+
+    <center>
+    <h4>
         Exam Title : {{exam_detail.TITLE}}<br>
         Total Marks : {{exam_detail.TOTAL_MARKS}}<br>
-        Full Time : {{exam_detail.DURATION}}
-    </h3>
+        Full Time : {{exam_detail.EXAM_TIME}} minutes
+    </h4><br>
+    </center>
     <form action='/coursora/exam/{{exam_id}}/' method='post'>
     {% csrf_token %}
         {% for question in questions %}
-            <h3>{{question.QUESTION}}</h3>
-            <label for="{{question.ID}}_1">{{question.OPTION1}}</label><br>
-            <input type="radio"  id="{{question.ID}}_1" name="{{question.ID}}" value="{{question.OPTION1}}"><br>
-            <label for="{{question.ID}}_2">{{question.OPTION2}}</label><br>
-            <input type="radio"  id="{{question.ID}}_2" name="{{question.ID}}" value="{{question.OPTION2}}"><br>
-            <label for="{{question.ID}}_3">{{question.OPTION3}}</label><br>
-            <input type="radio"  id="{{question.ID}}_3" name="{{question.ID}}" value="{{question.OPTION3}}"><br>
-            <label for="{{question.ID}}_4">{{question.OPTION4}}</label><br>
-            <input type="radio" id="{{question.ID}}_4" name="{{question.ID}}" value="{{question.OPTION4}}"><br>
+            <h4>&ensp;{{question.QUESTION}}</h4>
             
-            
+            &emsp;<input type="radio"  id="{{question.ID}}_1" name="{{question.ID}}" value="{{question.OPTION1}}">
+            <label for="{{question.ID}}_1">{{question.OPTION1}}</label> &emsp;&emsp;&emsp;&emsp;
+
+            &emsp;<input type="radio"  id="{{question.ID}}_2" name="{{question.ID}}" value="{{question.OPTION2}}">
+            <label for="{{question.ID}}_2">{{question.OPTION2}}</label> &emsp;&emsp;&emsp;&emsp;
+
+            &emsp;<input type="radio"  id="{{question.ID}}_3" name="{{question.ID}}" value="{{question.OPTION3}}">
+            <label for="{{question.ID}}_3">{{question.OPTION3}}</label> &emsp;&emsp;&emsp;&emsp;
+
+            &emsp;<input type="radio" id="{{question.ID}}_4" name="{{question.ID}}" value="{{question.OPTION4}}">
+            <label for="{{question.ID}}_4">{{question.OPTION4}}</label> &emsp;&emsp;&emsp;&emsp;<br>        
+            <br>
+
     {% endfor %} 
+    <br>
+            <br>
+            <br>
+            <br>
     {% if creator == 0 %}
-    <input type="submit" value="Submit">
+    <center><button class="btn btn-lg btn-outline-primary btn-block mb-5" type="submit" value="Submit">Submit</button> </center>
     {% endif %}
     {% if creator == 1 %}
+    <br>
     <a class="btn btn-primary" href="/coursora/exam/{{exam_id}}/addquestion" role="button">Add a New Question</a>
     {% endif %}
 </form>

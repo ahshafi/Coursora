@@ -49,12 +49,40 @@
   </center>
     <h3>   Active Courses:</h3><br>
   
-    {% for course in courses %}
-    <div class="list-group">        
-        <a href="/coursora/courselist/{{course.ID}}/contentlist/" class="list-group-item list-group-item-action"><b style="color:blue"><h3>{{course.Name}}</h3></b></a>   
-       
-      </div>         
-    {% endfor %}    
+    <ul class="list-group list-group-flush mydiv">
+      {% for course in courses %}
+      <li class="list-group-item list-group-item-action">
+      <div class="row  mydiv " onclick="window.location='/coursora/courselist/{{course.ID}}/contentlist/';" style="cursor:pointer;"  >
+          <div class="col-md-1">
+              <img src="{% static 'images/course.png'%}" width="80px" style="border-radius: 50%;">
+          </div>
+          <div class="col-md-10" style="padding-top: 0px;">
+            <div class="row  pt-2" >
+              <div class="col-6">
+                  <h4 style="color:#069">Name: {{course.Name}}</h4>
+              </div>
+  
+          </div>
+              <div class="row  pt-2" >
+                  <div class="col-6">
+                      <h6 style="color:#069">Topic : {{course.Topic}}</h6>
+                  </div>
+      
+              </div>              
+              <div class="row  pt-2" >
+                  <div class="col-6">
+                      <h6 style="color:#069">Level : {{course.Level}}</h6>
+                  </div>
+      
+              </div>
+              
+      
+          </div>
+        
+          </div>
+        </li>
+        {% endfor %}
+        </ul>  
     <a class="btn btn-primary" href='add_course/' role="button">Add Course</a>  
 </body>
 </html>

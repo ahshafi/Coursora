@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,16 +12,80 @@
     <title>Document</title>
 </head>
 <body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/coursora/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/coursora/courselist/">Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/coursora/profile/">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/coursora/profile/logout">Logout</a>
+          </li>         
+          
+        </ul>
+        
+      </div>
+    </div>
+  </nav> 
+  <br>
     {% for c in content %}
-      <h2>{{c.1}}</h2>
-      {{c.2}}
-      <br><br>
+      <center> <h2>{{c.1}}</h2>
+      <h3>{{c.2}}</h3>
+      <h4>Duraton: {{c.3}} minutes</h4><br>
+      <h4>{{c.5}}</h4>
+      <br><br> </center>
     {% endfor %}
     <br><br>
- <h2>Exams:</h2>
-    {% for e in exam %}
-      <h2><a href="/coursora/exam/{{e.0}}">{{e.1}}</a> &ensp;&ensp;&ensp;&ensp;</h2><h3>Total Marks = {{e.2}}</h3><br>
-    {% endfor %}
+ <h2>Exams:</h2>   
+    
+    <ul class="list-group list-group-flush mydiv">
+      {% for e in exam %}
+      <li class="list-group-item list-group-item-action">
+      <div class="row  mydiv " onclick="window.location='/coursora/exam/{{e.0}}/';" style="cursor:pointer;"  >
+          <div class="col-md-1">
+              <img src="{% static 'images/exam.png'%}" width="80px" style="border-radius: 50%;">
+          </div>
+          <div class="col-md-10" style="padding-top: 0px;">
+            <div class="row  pt-2" >
+              <div class="col-6">
+                  <h4 style="color:#069">Title : {{e.1}}</h4>
+              </div>
+  
+          </div>
+              <div class="row  pt-2" >
+                  <div class="col-6">
+                      <h6 style="color:#069">Total Marks : {{e.2}}</h6>
+                  </div>
+      
+              </div>              
+              <div class="row  pt-2" >
+                  <div class="col-6">
+                      <h6 style="color:#069">Exam Time : {{e.4}}</h6>
+                  </div>
+      
+              </div>
+              
+      
+          </div>
+        
+          </div>
+        </li>
+        {% endfor %}
+        </ul>
+        <br>
+
     {% if creator == 1 %}
     <a class="btn btn-primary" href="/coursora/add_exam/{{lec_id}}" role="button">Add a new Exam</a>
     {% endif %}

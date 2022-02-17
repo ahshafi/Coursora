@@ -38,11 +38,16 @@
           </div>
         </div>
       </nav> 
-  <h2><center>Content List</center></h2>
-  <center>
-     {% if creator == 0 %}
-     <h3>Registered &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; <a class="btn btn-primary" href="#" role="button">Course Progress</a>
-     {% endif %}</center>
+      <br>
+      {% if creator == 0 %}      
+     <h2><p style="text-align:right">Registered!!</p></h2>
+       
+
+     <h2><center>Content List <br> <br><a class="btn btn-primary" href="#" role="button">Course Progress</a></center></h2>
+     {% else %}
+     <h2><center>Content List <br></center></h2>
+     {% endif %}
+     
     
     <br><br>    
     
@@ -51,7 +56,7 @@
       <li class="list-group-item list-group-item-action">
       <div class="row  mydiv " onclick="window.location='/coursora/courselist/{{course_id}}/contentlist/{{c.0}}/view/';" style="cursor:pointer;"  >
           <div class="col-md-1">
-              <img src="{% static 'images/course.png'%}" width="80px" style="border-radius: 50%;">
+              <img src="{% static 'images/lecture.png'%}" width="80px" style="border-radius: 50%;">
           </div>
           <div class="col-md-10" style="padding-top: 0px;">
             <div class="row  pt-2" >
