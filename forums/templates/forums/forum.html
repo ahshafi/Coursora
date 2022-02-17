@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <meta name="csrf-token" content="{{ csrf_token }}" /> -->
+    <style>
+        .shadow-textarea textarea.form-control::placeholder {
+            font-weight: 300;
+        }
+        .shadow-textarea textarea.form-control {
+            padding-left: 0.8rem;
+        }
+    </style>
     <title>Document</title>
 </head>
-<body>
+<body style="background-color:powderblue;">
     <div id="main_div">
-        <textarea id="root_comment"></textarea><br>
-        <button onclick="addComment()">Comment</button>
+        <div class="collapse" id="collapseExample" style="margin-left: 15px;">
+            <div class="form-group shadow-textarea"><label for="root_comment"></label><textarea class="form-control z-depth-1" id="root_comment" rows="3" placeholder="Write something here..."></textarea></div>
+        </div>
+        <button style="margin-right: 5px; margin-left: 15px;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Comment
+        </button>
+        <button onclick="addComment()" class="btn btn-primary">Post</button>
     </div>
     <script type="text/javascript">
         
@@ -20,26 +37,54 @@
         {
             var node=document.createElement("div");
             node.style.margin=`0px 0px 0px ${margin}px`;
-            content=document.createElement("p");
-            content.innerHTML=`${user["Name"]}: ${comment["DESCRIPTION"]}`;
-            reply_text=document.createElement("textarea");
-            reply_text.style.visibility="hidden";
+            $(node).addClass("container mt-5");
+            node.innerHTML=`<div>
+                                <div>
+                                    <div>
+                                        <div class="bg-white p-2">
+                                            <div>
+                                                <div><span class="d-block font-weight-bold name">${user["Name"]}</span><span class="date text-black-50">Shared publicly</span></div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p class="comment-text">${comment["DESCRIPTION"]}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+            // content=document.createElement("p");
+            // content.style.margin=`0px 0px 0px 0px`;
+            // content.innerHTML=`${user["Name"]}: ${comment["DESCRIPTION"]}`;
+
+            reply_text=document.createElement("div");
+            var txtareaid=guidGenerator();
+            console.log(txtareaid);
+            $(reply_text).attr({"class": "collapse", "id": guidGenerator()})
+            reply_text.innerHTML=`<div class="form-group shadow-textarea"><label for=${txtareaid}></label><textarea class="form-control z-depth-1" id=${txtareaid} rows="3" placeholder="Write something here..."></textarea></div>`;
+            console.log(reply_text.id);
+            
             reply_button=document.createElement("button");
-            reply_button.type="submit";
+            $(reply_button).attr({"class": "btn btn-primary", "type": "button", "data-toggle": "collapse", "data-target": "#"+reply_text.id, "aria-expanded": "false", "aria-controls": reply_text.id});
             reply_button.innerHTML="reply";
-            reply_button.txt=reply_text;
-            node.appendChild(content);
+            reply_button.style.margin=`0px 5px 0px 0px`;
+            
+
+            post_button=document.createElement("button");
+            $(post_button).addClass("btn btn-primary");
+            post_button.type="submit";
+            post_button.innerHTML="post";
+            post_button.txtareaid=txtareaid;
+
+            //node.appendChild(content);
             node.appendChild(reply_text);
             node.appendChild(document.createElement("br"));
             node.appendChild(reply_button);
+            node.appendChild(post_button);
             node.appendChild(document.createElement("br"));
 
-            reply_button.addEventListener("click",function(){
-                if(this.txt.style.visibility=="hidden"){
-                     this.txt.style.visibility="visible";
-                }
-                else {
-                    var request = new XMLHttpRequest();
+            post_button.addEventListener("click",function(){
+                console.log(document.getElementById(this.txtareaid).value);
+                var request = new XMLHttpRequest();
                     request.onload = function () {
                         if (request.readyState === request.DONE) {
                             if (request.status === 200) {
@@ -49,8 +94,11 @@
                     };
                     request.open('POST', '/coursora/reply/');
                     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    request.send(JSON.stringify({"parent_comment_id": comment.ID, "forum_id": comment.FORUM_ID, "text":this.txt.value}))
-                }
+                    if($("#"+this.txtareaid).val().length>0){
+                        
+                        request.send(JSON.stringify({"parent_comment_id": comment.ID, "forum_id": comment.FORUM_ID, "text":document.getElementById(this.txtareaid).value}))
+                    
+                    }
             });
             return node;
         }
@@ -66,7 +114,8 @@
             };
             request.open('POST', '/coursora/reply/');
             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            request.send(JSON.stringify({"forum_id": forum_id, "text":document.getElementById("root_comment").value}))
+            if($("#root_comment").val().length>0)
+                request.send(JSON.stringify({"forum_id": forum_id, "text":document.getElementById("root_comment").value}))
         }
         function dfs(cid, margin)
         {
@@ -75,7 +124,7 @@
             document.getElementById("main_div")
             .appendChild(getNode(users[comment_dict[cid].USER_ID], comment_dict[cid], margin));
             for (let id in tree[cid]){
-                dfs( tree[cid][id], margin+30);
+                dfs( tree[cid][id], margin+50);
             }
         }
         function thread()
@@ -95,7 +144,13 @@
                     dfs(cid,0);
                 }
             }
-        }  
+        } 
+        function guidGenerator() {
+            var S4 = function() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            };
+            return "a"+(S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+        } 
         window.thread();
 
         

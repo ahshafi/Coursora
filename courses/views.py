@@ -1,3 +1,4 @@
+from logging.config import dictConfig
 from django.shortcuts import redirect, render
 from django.db import connections
 from django.http import HttpResponse
@@ -120,8 +121,22 @@ def add_exam(request,lec_id):
             str='/coursora/courselist/';str+="% s" % course_id;str+='/contentlist/';str+="% s" % lec_id;str+='/view/'
             return redirect(str)
 
-def show_contentlist_instructor(request, id):
-    pass
+def course_progress(request, course_id):
+    with connections['coursora_db'].cursor() as db:
+        db.execute('''SELECT ID FROM COURSE_REGISTRATION WHERE STUDENT_ID=%s AND COURSE_ID=%s''', [request.session['id'], course_id])
+        course_registration_id=dictfetchone(db)['ID']
+        db.execute('''SELECT OBTAINED_MARKS, TOTAL_MARKS FROM PARTICIPATES, EXAM WHERE COURSE_REGISTRATION_ID=%s AND PARTICIPATES.EXAM_ID=EXAM.ID''', [course_registration_id])
+        participated_exams=dictfetchall(db)
+        db.execute('''SELECT * FROM EXAM WHERE CONTENT_ID IN (SELECT ID FROM CONTENT WHERE COURSE_ID=%s)''', [course_id])
+        all_exams=dictfetchall(db)
+        tot_obtained_marks, tot_obtainable_marks, tot_exam_marks=0, 0, 0
+        for exam in participated_exams:
+            tot_obtained_marks+=exam['OBTAINED_MARKS']
+            tot_obtainable_marks+=exam['TOTAL_MARKS']
+        for exam in all_exams:
+            tot_exam_marks+=exam['TOTAL_MARKS']
+
+        return render(request, 'courses/course_progress.html', {'tot_obtained_marks': tot_obtained_marks, 'tot_obtainable_marks': tot_obtainable_marks, 'tot_exam_marks': tot_exam_marks})
 
 
 
