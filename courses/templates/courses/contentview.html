@@ -43,8 +43,8 @@
     {% for c in content %}
       <center> <h2>{{c.1}}</h2>
       <h3>{{c.2}}</h3>
-      <h4>Duraton: {{c.3}} minutes</h4><br>
-      <h4>{{c.5}}</h4>
+      <h4>Duraton: {{c.3}} minutes</h4><br>      
+      <iframe width="700" height="400" src={{c.5}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <br><br> </center>
     {% endfor %}
     <br><br>
@@ -62,7 +62,7 @@
               <div class="col-6">
                   <h4 style="color:#069">Title : {{e.1}}</h4>
               </div>
-  
+          
           </div>
               <div class="row  pt-2" >
                   <div class="col-6">

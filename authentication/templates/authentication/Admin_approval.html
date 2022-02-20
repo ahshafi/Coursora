@@ -50,9 +50,11 @@
         
         {% for t1 in teachers1 %}
         {% if t2.Id == t1.Id %}
+       
         &emsp;Specialization :  {{t1.Specialization}}<br>
         {% endif %}
         {% endfor %}
+        &emsp;Institution:  {{t2.Institution}}<br> 
         <br>
         &emsp;<a class="btn btn-primary" href="/coursora/acc_ins/{{t2.ID}}" role="button">Approve</a>
       </li>

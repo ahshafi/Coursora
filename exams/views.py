@@ -13,7 +13,7 @@ def exam(request, exam_id):
         course_id=dictfetchone(db)['COURSE_ID']
         db.execute('''SELECT * from "EXAM" where "ID"=%s''',[exam_id])
         exam_detail=dictfetchone(db)
-        db.execute('''SELECT * from "Teaches" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
+        db.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
         is_teacher=dictfetchone(db)
         if is_teacher:
             db.execute('''SELECT * FROM QA WHERE EXAM_ID=%s''', [exam_id])
@@ -42,7 +42,10 @@ def exam(request, exam_id):
             db.execute('''SELECT QA.ID ID, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER, OPTION_ANS FROM QA, ANSWERS 
             WHERE QA.ID=ANSWERS.QA_ID AND ANSWERS.COURSE_REGISTRATION_ID=%s''', [course_registration_id])
             submission=dictfetchall(db)
-            return render(request, 'exams/answers.html', {'submission': submission,'marks': marks, 'exam_id': exam_id,'exam_detail':exam_detail})
+            db.execute('''SELECT * from "FORUM"
+                          where "EXAM_ID"=%s''', [exam_id])
+            forumid=dictfetchone(db)['FORUM_ID']
+            return render(request, 'exams/answers.html', {'submission': submission,'marks': marks, 'exam_id': exam_id,'exam_detail':exam_detail,'forumid':forumid})
         elif request.method=='POST':
             db.execute('''INSERT INTO PARTICIPATES(COURSE_REGISTRATION_ID, EXAM_ID) VALUES(%s, %s)''',
             [course_registration_id, exam_id])

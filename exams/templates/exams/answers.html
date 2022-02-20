@@ -14,7 +14,7 @@
     <h3>
         Exam Title : {{exam_detail.TITLE}}<br>
         Total Marks : {{exam_detail.TOTAL_MARKS}}<br>
-        Full Time : {{exam_detail.DURATION}}
+        Full Time : {{exam_detail.EXAM_TIME}}
     </h3>
     <form action='/coursora/exam/{{exam_id}}/' method='post'>
     {% csrf_token %}
@@ -41,7 +41,7 @@
             {% else %}
             <input type="radio"  id="{{question.ID}}_3" name="{{question.ID}}" value="{{question.OPTION3}}"><br> 
             {% endif %}
-
+            
             <label for="{{question.ID}}_4">{{question.OPTION4}}</label><br>
             {% if question.OPTION_ANS == question.OPTION4 %}
             <input type="radio"  id="{{question.ID}}_4" name="{{question.ID}}" value="{{question.OPTION4}}" checked="checked"><br>
@@ -52,6 +52,7 @@
             
     {% endfor %} 
     <h3>Marks: {{ marks }}</h3>
+    <a class="btn btn-primary" href="/coursora/forum/{{forumid}}" role="button">Discussion Forum</a>
 </form>
 </body>
 </html>

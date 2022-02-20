@@ -12,11 +12,11 @@ def home(request):
 
 def register_student(request):
     if request.method=='POST':
-        name, email, password,klass=multiget(request.POST, ['name', 'email', 'password','klass'])
+        name, email, password,klass,inst=multiget(request.POST, ['name', 'email', 'password','klass','Institution'])
         
         with connections['coursora_db'].cursor() as db:
-            db.execute('''INSERT INTO "User"("Name", "Email", "Password")
-                        VALUES(%s, %s, %s)''', [name, email, password])
+            db.execute('''INSERT INTO "User"("Name", "Email", "Password","Institution")
+                        VALUES(%s, %s, %s,%s)''', [name, email, password,inst])
             db.execute('''SELECT ID FROM "User"
                         WHERE "Name"=%s AND "Password"=%s ''', [name, password])
             id=dictfetchone(db)['ID']
@@ -34,11 +34,11 @@ def register_student(request):
 
 def register_teacher(request):
     if request.method=='POST':
-        name, email, password,specialization=multiget(request.POST, ['name', 'email', 'password','specialization'])
+        name, email, password,specialization,inst=multiget(request.POST, ['name', 'email', 'password','specialization','Institution'])
         
         with connections['coursora_db'].cursor() as db:
-            db.execute('''INSERT INTO "User"("Name", "Email", "Password")
-                        VALUES(%s, %s, %s)''', [name, email, password])
+            db.execute('''INSERT INTO "User"("Name", "Email", "Password","Institution")
+                        VALUES(%s, %s, %s,%s)''', [name, email, password,inst])
             db.execute('''SELECT ID FROM "User"
                         WHERE "Name"=%s AND "Password"=%s ''', [name, password])
             id=dictfetchone(db)['ID']
@@ -109,7 +109,7 @@ def profile(request):
             if instructor is not None:
                 db.execute('''SELECT * FROM "Course"
                             WHERE "ID" in(
-                                select "COURSE_ID" from "Teaches"
+                                select "COURSE_ID" from "TEACHES"
                                 where "INSTRUCTOR_ID"=%s
                             ) ''', [instructor['ID']])
                 courses=dictfetchall(db)

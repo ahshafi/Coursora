@@ -32,7 +32,7 @@ def course_reg(request,course_id):
 def show_contentlist(request,course_id):
     creator = 0 # if a teacher has not entered to create a lecture
     with connections['coursora_db'].cursor() as c:
-         c.execute('''SELECT * from "Teaches" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
+         c.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
          x=dictfetchone(c)
          if x:
              creator=1 # if a teacher has entered to create a lecture
@@ -65,7 +65,7 @@ def show_contentlist(request,course_id):
 def show_content_view(request,course_id,lec_id):
     creator = 0 # if a teacher has not entered to create a lecture
     with connections['coursora_db'].cursor() as c:
-         c.execute('''SELECT * from "Teaches" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
+         c.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
          x=dictfetchone(c)
          if x:
              creator=1 # if a teacher has entered to create a lecture  
@@ -90,7 +90,7 @@ def add_course(request):
             db.execute('''SELECT ID FROM "Course"
                         WHERE "Name"=%s''', [name])
             course_id=dictfetchone(db)['ID']
-            db.execute('''INSERT INTO "Teaches"("INSTRUCTOR_ID", "COURSE_ID")
+            db.execute('''INSERT INTO "TEACHES"("INSTRUCTOR_ID", "COURSE_ID")
                         VALUES(%s, %s)''', [request.session['id'], course_id])                        
         return redirect('/coursora/profile/')
 
@@ -112,16 +112,40 @@ def add_exam(request,lec_id):
     else :            
          Title,Total_Marks,Exam_Time=multiget(request.POST, ['Title', 'Total_Marks', 'Exam_Time'])
          with connections['coursora_db'].cursor() as db:
-            db.execute('''INSERT INTO "EXAM"("TITLE", "TOTAL_MARKS", "CONTENT_ID","EXAM_TIME")
-                        VALUES(%s, %s, %s,%s)''', [Title, Total_Marks, lec_id,Exam_Time])     
+            db.execute('''SELECT MAX("ID") "MAXID"
+              FROM "EXAM"
+                  ''')
+            max_ID=dictfetchone(db)['MAXID'];max_ID=max_ID+1
+
+            db.execute('''INSERT INTO "EXAM"("ID","TITLE", "TOTAL_MARKS", "CONTENT_ID","EXAM_TIME")
+                        VALUES(%s,%s, %s, %s,%s)''', [max_ID,Title, Total_Marks, lec_id,Exam_Time])
+            db.execute('''INSERT INTO "FORUM"("TITLE", "EXAM_ID")
+                        VALUES(%s, %s)''', ['Discussion Forum',max_ID])     
             db.execute('''SELECT * FROM "CONTENT"
                         WHERE "ID"=%s''', [lec_id])
             course_id=dictfetchone(db)['COURSE_ID']
             str='/coursora/courselist/';str+="% s" % course_id;str+='/contentlist/';str+="% s" % lec_id;str+='/view/'
             return redirect(str)
 
-def show_contentlist_instructor(request, id):
-    pass
+def course_progress(request, course_id):
+    with connections['coursora_db'].cursor() as db:
+        db.execute('''SELECT ID FROM COURSE_REGISTRATION WHERE STUDENT_ID=%s AND COURSE_ID=%s''', [request.session['id'], course_id])
+        course_registration_id=dictfetchone(db)['ID']
+        db.execute('''SELECT OBTAINED_MARKS, TOTAL_MARKS FROM PARTICIPATES, EXAM WHERE COURSE_REGISTRATION_ID=%s AND PARTICIPATES.EXAM_ID=EXAM.ID''', [course_registration_id])
+        participated_exams=dictfetchall(db)
+        db.execute('''SELECT * FROM EXAM WHERE CONTENT_ID IN (SELECT ID FROM CONTENT WHERE COURSE_ID=%s)''', [course_id])
+        all_exams=dictfetchall(db)
+        tot_obtained_marks, tot_obtainable_marks, tot_exam_marks=0, 0, 0
+        for exam in participated_exams:
+            tot_obtained_marks+=exam['OBTAINED_MARKS']
+            tot_obtainable_marks+=exam['TOTAL_MARKS']
+        for exam in all_exams:
+            tot_exam_marks+=exam['TOTAL_MARKS']
+
+        return render(request, 'courses/course_progress.html', {'tot_obtained_marks': tot_obtained_marks, 'tot_obtainable_marks': tot_obtainable_marks, 'tot_exam_marks': tot_exam_marks})
+
+
+
 
 
 
