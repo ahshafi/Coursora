@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +51,7 @@
     <form action='/coursora/exam/{{exam_id}}/' method='post'>
     {% csrf_token %}
         {% for question in questions %}
-            <h4>&ensp;{{question.QUESTION}}</h4>
+        <h3>&ensp;&nbsp;<img src="{% static 'images/ques1.png'%}" height="30px" class="d-inline-block align-top">&nbsp;{{question.QUESTION}}</h3> &emsp;         
             
             &emsp;<input type="radio"  id="{{question.ID}}_1" name="{{question.ID}}" value="{{question.OPTION1}}">
             <label for="{{question.ID}}_1">{{question.OPTION1}}</label> &emsp;&emsp;&emsp;&emsp;

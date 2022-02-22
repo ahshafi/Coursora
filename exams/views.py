@@ -39,8 +39,8 @@ def exam(request, exam_id):
             db.execute('''SELECT OBTAINED_MARKS FROM PARTICIPATES
             WHERE COURSE_REGISTRATION_ID=%s AND EXAM_ID=%s''', [course_registration_id, exam_id])
             marks=dictfetchone(db)['OBTAINED_MARKS']
-            db.execute('''SELECT QA.ID ID, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER, OPTION_ANS FROM QA, ANSWERS 
-            WHERE QA.ID=ANSWERS.QA_ID AND ANSWERS.COURSE_REGISTRATION_ID=%s''', [course_registration_id])
+            db.execute('''SELECT QA.ID ID, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER, OPTION_ANS,QUESTION FROM QA, ANSWERS 
+            WHERE QA.ID=ANSWERS.QA_ID AND ANSWERS.COURSE_REGISTRATION_ID=%s AND QA.EXAM_ID=%s''', [course_registration_id,exam_id])
             submission=dictfetchall(db)
             db.execute('''SELECT * from "FORUM"
                           where "EXAM_ID"=%s''', [exam_id])

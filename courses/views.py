@@ -129,6 +129,8 @@ def add_exam(request,lec_id):
 
 def course_progress(request, course_id):
     with connections['coursora_db'].cursor() as db:
+        db.execute('''SELECT * FROM "Course" WHERE "ID"=%s''', [course_id])
+        course_name=dictfetchone(db)['Name']
         db.execute('''SELECT ID FROM COURSE_REGISTRATION WHERE STUDENT_ID=%s AND COURSE_ID=%s''', [request.session['id'], course_id])
         course_registration_id=dictfetchone(db)['ID']
         db.execute('''SELECT OBTAINED_MARKS, TOTAL_MARKS FROM PARTICIPATES, EXAM WHERE COURSE_REGISTRATION_ID=%s AND PARTICIPATES.EXAM_ID=EXAM.ID''', [course_registration_id])
@@ -141,8 +143,10 @@ def course_progress(request, course_id):
             tot_obtainable_marks+=exam['TOTAL_MARKS']
         for exam in all_exams:
             tot_exam_marks+=exam['TOTAL_MARKS']
+        stat1=round(tot_obtained_marks*100/tot_obtainable_marks)
+        stat2=round(tot_obtainable_marks*100/tot_exam_marks)
 
-        return render(request, 'courses/course_progress.html', {'tot_obtained_marks': tot_obtained_marks, 'tot_obtainable_marks': tot_obtainable_marks, 'tot_exam_marks': tot_exam_marks})
+        return render(request, 'courses/course_progress.html', {'tot_obtained_marks': tot_obtained_marks, 'tot_obtainable_marks': tot_obtainable_marks, 'tot_exam_marks': tot_exam_marks,'course_name':course_name,'student_name':request.session['name'],'stat1':stat1,'stat2':stat2})
 
 
 
