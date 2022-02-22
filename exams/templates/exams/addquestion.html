@@ -12,45 +12,93 @@
     <title>Document</title>
 </head>
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="">&ensp;<img src="{% static 'images/coursora.png'%}" height="30px" class="d-inline-block align-top">&ensp;Coursora</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/coursora/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/courselist/">Courses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/profile/">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/coursora/profile/logout">Logout</a>
+              </li>         
+              
+            </ul>
+            
+          </div>
+        </div>
+      </nav> <br>
+
     <center>
-    <h3>New Question</h3>  
+    <h3>Create A New Question</h3>  
     
      </center>
-    <form action="" method="post">
-        {% csrf_token %}
-        <label for="Question">Description : </label>
-        <input type="text" id="Question" name="Question"><br>
-        <label for="Op1">Option1 : </label>
-        <input type="text" id="Op1" name="Op1"><br>
-        <label for="Op2">Option2 : </label>
-        <input type="text" id="Op2" name="Op2"><br>
-        <label for="Op3">Option3 : </label>
-        <input type="text" id="Op3" name="Op3"><br>
-        <label for="Op4">Option4 : </label>
-        <input type="text" id="Op4" name="Op4"><br>       
-
-        <label for="Answer">Answer (1/2/3/4) : </label>
-        <input type="text" id="Answer" name="Answer"><br>        
-        <input type="submit" value="Create Question">
-                
-    </form>
+     
     <br>
-    <form action="" method="">
-        {% csrf_token %}
-        <input type="radio"  id="{{question.ID}}_1" name="{{question.ID}}" value="{{question.OPTION1}}">
-        <div class="row pb-3" style="padding-left: 340px;padding-bottom: 20px;">
+    <form action="" method="post">
+        {% csrf_token %}        
+        <div class="row pb-3" style="padding-left: 410px;padding-bottom: 20px;">
             
             <div class="col-md-6">                
-                <label for="name" >Course Name : </label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="" >            
+                <label for="name" >Description : </label>
+                <input type="text" id="Question" name="Question" class="form-control" placeholder="" >            
             </div>
         </div>
-        <div class="row pb-3" style="padding-left: 340px;padding-bottom: 20px;">
+        
+        
+        <div class="row pb-3" style="padding-left: 410px;padding-bottom: 20px;">
             <div class="col-md-6">
-                <label for="name" >Course Name : </label>
-              <input type="text" id="name" name="name" class="form-control" placeholder="" >            
+                <input type="radio"  id="q1" name="choice" value="Op1">
+                <label for="q1"></label>
+                <label for="name" >Option1 : </label>
+              <input type="text" id="Op1" name="Op1" class="form-control" placeholder="" >            
             </div>
         </div>
+
+        <div class="row pb-3" style="padding-left: 410px;padding-bottom: 20px;">
+            <div class="col-md-6">
+                <input type="radio"  id="q2" name="choice" value="Op2">
+                <label for="q2"></label>
+                <label for="name" >Option2 : </label>
+              <input type="text" id="Op2" name="Op2" class="form-control" placeholder="" >            
+            </div>
+        </div>
+
+        <div class="row pb-3" style="padding-left: 410px;padding-bottom: 20px;">
+            <div class="col-md-6">
+                <input type="radio"  id="q3" name="choice" value="Op3">
+                <label for="q3"></label>
+                <label for="name" >Option3 : </label>
+              <input type="text" id="Op3" name="Op3" class="form-control" placeholder="" >            
+            </div>
+        </div>
+
+        <div class="row pb-3" style="padding-left: 410px;padding-bottom: 20px;">
+            <div class="col-md-6">
+                <input type="radio"  id="q4" name="choice" value="Op4">
+                <label for="q4"></label>
+                <label for="name" >Option4 : </label>
+              <input type="text" id="Op4" name="Op4" class="form-control" placeholder="" >            
+            </div>
+        </div>
+
+        <div class="row  pt-1" style="padding-left: 410px;">
+            
+            <div class="col-md-6" >             
+                <button class="btn btn-lg btn-outline-primary btn-block mb-5" type="submit" value="Create Question">Create Question</button> 
+            </div>
+          </div>
                 
     </form>
 

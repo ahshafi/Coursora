@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
 <body style="background-color:powderblue;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Coursora</a>
+          <a class="navbar-brand" href="">&ensp;<img src="{% static 'images/coursora.png'%}" height="30px" class="d-inline-block align-top">&ensp;Coursora</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -38,7 +39,11 @@
         </div>
       </nav> <br>
    
-    
+      {% if stat2 == 100 %}
+      <center><h1>Congratulations!!!<br>You have completed the course!</h1></center><br><br><br>
+      {% else %}
+      <center><h1>Course Progress</h1></center><br><br><br>
+      {% endif %}
       <center><h1>Course Progress</h1></center><br><br><br>
       <div class="row pb-3" style="padding-left: 340px;padding-bottom: 20px;" >
       <h4>
@@ -50,8 +55,7 @@
       <div class="progress" >
         <div class="progress-bar bg-success" role="progressbar" style="width: {{stat1}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{stat1}}%</div>
       </div>
-      <br>
-      
+      <br>      
       Course Progress :<br><br>      
         <div class="progress" >
           <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{stat2}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{stat2}}%</div>        

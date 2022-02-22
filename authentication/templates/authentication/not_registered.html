@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if role == 'student' %}
+    <center>
+        <h1>
+            <br>
+            Error<br><br>
+            You are not registered yet
+        </h1>
+    </center>
+    {% else %}
+    <center>
+        <h1>
+            <br>
+            Error<br><br>
+            You must log in from a student<br>
+            account to enroll into the course
+        </h1>
+    </center>
+    {% endif %}
+</body>
+</html>

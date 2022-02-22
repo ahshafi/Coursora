@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from django.forms import NullBooleanField
 from django.shortcuts import redirect, render
 from django.db import connections
 from django.http import HttpResponse
@@ -22,14 +24,17 @@ def show_courselist(request):
         return render(request,'courses/courselist.html',{'courses':courses})  
 
 def course_reg(request,course_id):
-    if  request.session['role']=='instructor':
-        return HttpResponse('Only students can register')
+    if  request.session['role']!='student':
+        return render(request,'authentication/not_registered.html',{'role':request.session['role']}) 
     with connections['coursora_db'].cursor() as db:
         db.execute('''INSERT INTO "COURSE_REGISTRATION"("STUDENT_ID", "COURSE_ID") VALUES(%s, %s)''', [request.session['id'], course_id])
         return show_contentlist(request,course_id)
     
 
 def show_contentlist(request,course_id):
+    if len(request. session. keys()) == 0 :
+        return render(request,'authentication/not_registered.html',{'role':'none'})
+
     creator = 0 # if a teacher has not entered to create a lecture
     with connections['coursora_db'].cursor() as c:
          c.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
@@ -112,10 +117,20 @@ def add_exam(request,lec_id):
     else :            
          Title,Total_Marks,Exam_Time=multiget(request.POST, ['Title', 'Total_Marks', 'Exam_Time'])
          with connections['coursora_db'].cursor() as db:
-            db.execute('''SELECT MAX("ID") "MAXID"
+           
+            db.execute('''SELECT *
               FROM "EXAM"
                   ''')
-            max_ID=dictfetchone(db)['MAXID'];max_ID=max_ID+1
+            first_exam=dictfetchone(db)
+            max_ID=0
+            if first_exam:
+                 db.execute('''SELECT MAX("ID") "MAXID"
+                 FROM "EXAM"
+                   ''')
+                 max_ID=dictfetchone(db)['MAXID'];max_ID=max_ID+1
+            else:
+                 max_ID=1           
+           
 
             db.execute('''INSERT INTO "EXAM"("ID","TITLE", "TOTAL_MARKS", "CONTENT_ID","EXAM_TIME")
                         VALUES(%s,%s, %s, %s,%s)''', [max_ID,Title, Total_Marks, lec_id,Exam_Time])
@@ -143,8 +158,14 @@ def course_progress(request, course_id):
             tot_obtainable_marks+=exam['TOTAL_MARKS']
         for exam in all_exams:
             tot_exam_marks+=exam['TOTAL_MARKS']
-        stat1=round(tot_obtained_marks*100/tot_obtainable_marks)
-        stat2=round(tot_obtainable_marks*100/tot_exam_marks)
+        if tot_obtainable_marks==0:
+            stat1=0
+        else:
+            stat1=round(tot_obtained_marks*100/tot_obtainable_marks)
+        if tot_exam_marks==0:
+            stat2=0
+        else:
+            stat2=round(tot_obtainable_marks*100/tot_exam_marks)        
 
         return render(request, 'courses/course_progress.html', {'tot_obtained_marks': tot_obtained_marks, 'tot_obtainable_marks': tot_obtainable_marks, 'tot_exam_marks': tot_exam_marks,'course_name':course_name,'student_name':request.session['name'],'stat1':stat1,'stat2':stat2})
 

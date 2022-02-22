@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="">Coursora</a>
+          <a class="navbar-brand" href="">&ensp;<img src="{% static 'images/coursora.png'%}" height="30px" class="d-inline-block align-top">&ensp;Coursora</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -79,8 +80,8 @@
           
           <div class="row pb-3" style="padding-left: 340px;padding-bottom: 20px;">
           <div class="col-md-6">
-            <input type="text" id="name" name="name" class="form-control" placeholder="User Name" required autofocus>
-          <label for="email_or_name" class="sr-only">User Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
+          <label for="email_or_name" class="sr-only">Name</label>
           </div>
           </div>
           

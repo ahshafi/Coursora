@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="">Coursora</a>
+          <a class="navbar-brand" href="">&ensp;<img src="{% static 'images/coursora.png'%}" height="30px" class="d-inline-block align-top">&ensp;Coursora</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -41,22 +42,18 @@
       <h5>
       <ul class="list-group">
 
-      {% for t2 in teachers2 %}
+      {% for t1 in teachers1 %}
         
       <li class="list-group-item">
 
-        &emsp;Name :  {{t2.Name}}<br>
-        &emsp;Email :  {{t2.Email}}<br>       
+        &emsp;Name :  {{t1.Name}}<br>
+        &emsp;Email :  {{t1.Email}}<br>  
+      
+        &emsp;Specialization :  {{t1.Specialization}}<br>       
         
-        {% for t1 in teachers1 %}
-        {% if t2.Id == t1.Id %}
-       
-        &emsp;Specialization :  {{t1.Specialization}}<br>
-        {% endif %}
-        {% endfor %}
-        &emsp;Institution:  {{t2.Institution}}<br> 
+        &emsp;Institution:  {{t1.Institution}}<br> 
         <br>
-        &emsp;<a class="btn btn-primary" href="/coursora/acc_ins/{{t2.ID}}" role="button">Approve</a>
+        &emsp;<a class="btn btn-primary" href="/coursora/acc_ins/{{t1.ID}}" role="button">Approve</a>
       </li>
       {% endfor %}
     </ul>

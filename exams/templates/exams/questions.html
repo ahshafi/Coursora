@@ -15,7 +15,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+          <a class="navbar-brand" href="">&ensp;<img src="{% static 'images/coursora.png'%}" height="30px" class="d-inline-block align-top">&ensp;Coursora</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -40,7 +40,11 @@
         </div>
       </nav>
     <br>
-
+    {% if creator == 1 %}
+    <div style="text-align:right">
+      <a class="btn btn-primary" href="/coursora/forum/{{forumid}}" role="button">Discussion Forum</a>&emsp;
+    </div>
+    {% endif %}
     <center>
     <h4>
         Exam Title : {{exam_detail.TITLE}}<br>
@@ -76,7 +80,8 @@
     {% endif %}
     {% if creator == 1 %}
     <br>
-    <a class="btn btn-primary" href="/coursora/exam/{{exam_id}}/addquestion" role="button">Add a New Question</a>
+    &emsp;<a class="btn btn-primary" href="/coursora/exam/{{exam_id}}/addquestion" role="button">Add a New Question</a>
+    <br><br>
     {% endif %}
 </form>
 </body>

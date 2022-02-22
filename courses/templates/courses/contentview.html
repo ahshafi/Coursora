@@ -15,7 +15,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="">&ensp;<img src="{% static 'images/coursora.png'%}" height="30px" class="d-inline-block align-top">&ensp;Coursora</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -41,9 +41,9 @@
   </nav> 
   <br>
     {% for c in content %}
-      <center> <h2>{{c.1}}</h2>
-      <h3>{{c.2}}</h3>
-      <h4>Duraton: {{c.3}} minutes</h4><br>      
+      <center> <h2>{{c.1}}</h2>      
+      <h4>Duraton: {{c.3}} minutes</h4><br><br>
+      <h4>{{c.2}}</h4><br>>      
       <iframe width="700" height="400" src={{c.5}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <br><br> </center>
     {% endfor %}
@@ -72,7 +72,7 @@
               </div>              
               <div class="row  pt-2" >
                   <div class="col-6">
-                      <h6 style="color:#069">Exam Time : {{e.4}}</h6>
+                      <h6 style="color:#069">Exam Time : {{e.4}} minutes</h6>
                   </div>
       
               </div>

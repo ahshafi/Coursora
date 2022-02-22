@@ -15,10 +15,13 @@ def exam(request, exam_id):
         exam_detail=dictfetchone(db)
         db.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
         is_teacher=dictfetchone(db)
+        db.execute('''SELECT * from "FORUM"
+                          where "EXAM_ID"=%s''', [exam_id])
+        forumid=dictfetchone(db)['FORUM_ID']
         if is_teacher:
             db.execute('''SELECT * FROM QA WHERE EXAM_ID=%s''', [exam_id])
             questions=dictfetchall(db)
-            return render(request, 'exams/questions.html', {'questions':questions, 'exam_id': exam_id,'exam_detail':exam_detail,'creator': True, 'participated': False})  
+            return render(request, 'exams/questions.html', {'questions':questions, 'exam_id': exam_id,'exam_detail':exam_detail,'creator': True, 'participated': False,'forumid':forumid})  
     
         db.execute('''SELECT * 
         FROM "EXAM" JOIN  "CONTENT" ON ("EXAM"."CONTENT_ID"="CONTENT"."ID")
@@ -27,7 +30,7 @@ def exam(request, exam_id):
         ON ("COURSE_REGISTRATION"."COURSE_ID"="Course"."ID" AND "COURSE_REGISTRATION"."STUDENT_ID"=%s)''', [request.session['id']])
         registered=dictfetchall(db)
         if not registered:
-           return HttpResponse('course not registered')
+           return render(request, 'authentication/not_registered.html', {'role':request.session['role']})  
         
         course_registration_id=get_course_registration_id(request.session['id'], exam_id)
 
@@ -65,7 +68,7 @@ def exam(request, exam_id):
 def add_ques(request,exam_id):
     #str='/coursora/exam/';str+="% s" % exam_id;str+='/addquestion/'
     if request.method=='POST':        
-        Question,Op1,Op2,Op3,Op4,Answer=multiget(request.POST, ['Question','Op1','Op2','Op3','Op4','Answer'])
+        Question,Op1,Op2,Op3,Op4,Answer=multiget(request.POST, ['Question','Op1','Op2','Op3','Op4',request.POST['choice']])
         with connections['coursora_db'].cursor() as db:
             db.execute('''INSERT INTO "QA"("OPTION1", "OPTION2", "OPTION3","OPTION4","ANSWER","EXAM_ID","QUESTION")
                         VALUES(%s, %s, %s,%s,%s,%s,%s)''', [Op1,Op2,Op3,Op4,Answer,exam_id,Question])

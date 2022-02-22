@@ -66,7 +66,7 @@ def login(request):
                         WHERE "ID"=%s ''', [user['ID']])
                 instructor=dictfetchone(db)
                 if (instructor is not None) and instructor['STATUS']!='approved':
-                    return HttpResponse('Please wait for admin approval')
+                    return render(request, 'authentication/waitforadmin.html')
                 
                 db.execute('''SELECT * FROM "Instructor" 
                             WHERE "ID"=%s''', [user['ID']])
@@ -125,20 +125,13 @@ def profile(request):
                 courses=dictfetchall(db)
                 return render(request, 'authentication/student_profile.html',{'user':user,'student':student,'courses':courses})
             else :
-                db.execute('''SELECT * FROM "Instructor"
-                    WHERE "STATUS"<>%s
-                    order by "ID"
+                db.execute('''SELECT * FROM "Instructor","User"
+                    WHERE "STATUS"<>%s AND "User"."ID"="Instructor"."ID"
+                    
                     ''',['approved'])
                 t1=dictfetchall(db)
-                db.execute('''SELECT * FROM "User"
-                    WHERE ID in(
-                        select ID from "Instructor"
-                        where "STATUS"<>%s
-                        )
-                        order by "ID"
-                    ''',['approved'])
-                t2=dictfetchall(db)
-                return render(request, 'authentication/Admin_approval.html',{'teachers1':t1,'teachers2':t2})
+               
+                return render(request, 'authentication/Admin_approval.html',{'teachers1':t1})
             
 
 def logout(request):
