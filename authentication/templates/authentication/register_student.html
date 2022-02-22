@@ -42,7 +42,7 @@
           </div>
         </div>
       </nav>
-    
+      
       <form class="student_register" action="" method="POST" >
 
         {% csrf_token %}
@@ -115,6 +115,14 @@
         </div>
        
         </form> 
-    
+      {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+            {% endfor %}
+        </ul>
+      {% endif %}
 </body>
 </html>

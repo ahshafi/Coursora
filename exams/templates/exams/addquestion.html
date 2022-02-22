@@ -20,17 +20,27 @@
         {% csrf_token %}
         <label for="Question">Description : </label>
         <input type="text" id="Question" name="Question"><br>
+
+        <input type="radio"  id="q1" name="choice" value="Op1">
+        <label for="q1"></label>
         <label for="Op1">Option1 : </label>
         <input type="text" id="Op1" name="Op1"><br>
-        <label for="Op2">Option2 : </label>
+        
+        <input type="radio"  id="q2" name="choice" value="Op2">
+        <label for="q2"></label>
+        <label for="Op2">Option1 : </label>
         <input type="text" id="Op2" name="Op2"><br>
-        <label for="Op3">Option3 : </label>
+        
+        <input type="radio"  id="q3" name="choice" value="Op3">
+        <label for="q3"></label>
+        <label for="Op3">Option1 : </label>
         <input type="text" id="Op3" name="Op3"><br>
-        <label for="Op4">Option4 : </label>
-        <input type="text" id="Op4" name="Op4"><br>       
 
-        <label for="Answer">Answer (1/2/3/4) : </label>
-        <input type="text" id="Answer" name="Answer"><br>        
+        <input type="radio"  id="q4" name="choice" value="Op4">
+        <label for="q4"></label>
+        <label for="Op4">Option1 : </label>
+        <input type="text" id="Op4" name="Op4"><br>
+
         <input type="submit" value="Create Question">
                 
     </form>
