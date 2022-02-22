@@ -33,7 +33,7 @@ def course_reg(request,course_id):
 def show_contentlist(request,course_id):
     creator = 0 # if a teacher has not entered to create a lecture
     with connections['coursora_db'].cursor() as c:
-         c.execute('''SELECT * from "Teaches" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
+         c.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
          x=dictfetchone(c)
          if x:
              creator=1 # if a teacher has entered to create a lecture
@@ -66,7 +66,7 @@ def show_contentlist(request,course_id):
 def show_content_view(request,course_id,lec_id):
     creator = 0 # if a teacher has not entered to create a lecture
     with connections['coursora_db'].cursor() as c:
-         c.execute('''SELECT * from "Teaches" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
+         c.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
          x=dictfetchone(c)
          if x:
              creator=1 # if a teacher has entered to create a lecture  
@@ -91,7 +91,7 @@ def add_course(request):
             db.execute('''SELECT ID FROM "Course"
                         WHERE "Name"=%s''', [name])
             course_id=dictfetchone(db)['ID']
-            db.execute('''INSERT INTO "Teaches"("INSTRUCTOR_ID", "COURSE_ID")
+            db.execute('''INSERT INTO "TEACHES"("INSTRUCTOR_ID", "COURSE_ID")
                         VALUES(%s, %s)''', [request.session['id'], course_id])                        
         return redirect('/coursora/profile/')
 

@@ -109,7 +109,7 @@ def profile(request):
             if instructor is not None:
                 db.execute('''SELECT * FROM "Course"
                             WHERE "ID" in(
-                                select "COURSE_ID" from "Teaches"
+                                select "COURSE_ID" from "TEACHES"
                                 where "INSTRUCTOR_ID"=%s
                             ) ''', [instructor['ID']])
                 courses=dictfetchall(db)

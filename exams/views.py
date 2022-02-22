@@ -13,7 +13,7 @@ def exam(request, exam_id):
         course_id=dictfetchone(db)['COURSE_ID']
         db.execute('''SELECT * from "EXAM" where "ID"=%s''',[exam_id])
         exam_detail=dictfetchone(db)
-        db.execute('''SELECT * from "Teaches" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
+        db.execute('''SELECT * from "TEACHES" where "COURSE_ID"=%s and "INSTRUCTOR_ID"=%s''',[course_id,request.session['id']])
         is_teacher=dictfetchone(db)
         if is_teacher:
             db.execute('''SELECT * FROM QA WHERE EXAM_ID=%s''', [exam_id])
