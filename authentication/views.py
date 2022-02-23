@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from util.dictfunc import multidel, multiget, multiset
 from util.fetcher import *
 from django.urls import reverse
+from django.contrib import messages
 # Create your views here.
 
 def home(request):
@@ -15,6 +16,18 @@ def register_student(request):
         name, email, password,klass,inst=multiget(request.POST, ['name', 'email', 'password','klass','Institution'])
         
         with connections['coursora_db'].cursor() as db:
+            db.execute('''SELECT COUNT(*) CNT FROM "User" WHERE "Name"=%s''', [name])
+            name_collision=dictfetchone(db)['CNT']
+            if name_collision:
+                messages.info(request, 'User already name taken')
+                return render(request, 'authentication/register_student.html')
+
+            db.execute('''SELECT COUNT(*) CNT FROM "User" WHERE "Email"=%s''', [email])
+            email_collision=dictfetchone(db)['CNT']
+            if email_collision:
+                messages.info(request, 'Email already registered')
+                return render(request, 'authentication/register_teacher.html')
+            
             db.execute('''INSERT INTO "User"("Name", "Email", "Password","Institution")
                         VALUES(%s, %s, %s,%s)''', [name, email, password,inst])
             db.execute('''SELECT ID FROM "User"
@@ -35,8 +48,20 @@ def register_student(request):
 def register_teacher(request):
     if request.method=='POST':
         name, email, password,specialization,inst=multiget(request.POST, ['name', 'email', 'password','specialization','Institution'])
-        
         with connections['coursora_db'].cursor() as db:
+            db.execute('''SELECT COUNT(*) CNT FROM "User" WHERE "Name"=%s''', [name])
+            name_collision=dictfetchone(db)['CNT']
+            if name_collision:
+                messages.info(request, 'User already name taken')
+                return render(request, 'authentication/register_student.html')
+
+            db.execute('''SELECT COUNT(*) CNT FROM "User" WHERE "Email"=%s''', [email])
+            email_collision=dictfetchone(db)['CNT']
+            if email_collision:
+                messages.info(request, 'Email already registered')
+                return render(request, 'authentication/register_student.html')
+
+
             db.execute('''INSERT INTO "User"("Name", "Email", "Password","Institution")
                         VALUES(%s, %s, %s,%s)''', [name, email, password,inst])
             db.execute('''SELECT ID FROM "User"

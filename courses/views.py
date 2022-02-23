@@ -57,10 +57,6 @@ def show_contentlist(request,course_id):
                      where "ID"=%s ''',[c1])
         x1=dictfetchone(c)
         if x or (request.method=='POST' and x1) or creator==1 :
-            if request.method=='POST':
-                with connections['coursora_db'].cursor() as c:
-                    c.execute('''INSERT INTO "COURSE_REGISTRATION"("STUDENT_ID", "COURSE_ID")
-                        VALUES(%s, %s)''', [c1, course_id])
             return render(request,'courses/contentlist.html',{'content':content,'creator':creator,'course_id':course_id})
         else:
             return render(request,'courses/contentlist_withoutaccess.html',{'content':content, 'course_id': course_id})

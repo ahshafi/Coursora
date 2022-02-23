@@ -47,7 +47,7 @@
         Exam Title : {{exam_detail.TITLE}}<br>
         Total Marks : {{exam_detail.TOTAL_MARKS}}<br>
         Full Time : {{exam_detail.EXAM_TIME}} minutes<br><br>
-        Answer Script<br>
+        Answer Script<br><br>
     </h3>    
 </center>
     <form action='/coursora/exam/{{exam_id}}/' method='post'>
@@ -56,7 +56,13 @@
 
             
             
-            <h3>&ensp;&nbsp;<img src="{% static 'images/ques1.png'%}" height="30px" class="d-inline-block align-top">&nbsp;{{question.QUESTION}}</h3> &emsp;         
+            <h4>&ensp;&nbsp;<img src="{% static 'images/ques1.png'%}" height="30px" class="d-inline-block align-top">&nbsp;{{question.QUESTION}}
+              {% if question.OPTION_ANS == question.ANSWER  %}
+              &emsp;&ensp;<img src="{% static 'images/tick.png'%}" height="15px" class="d-inline-block align-center">
+              {% else %}
+              &emsp;&ensp;<img src="{% static 'images/cross.png'%}" height="15px" class="d-inline-block align-center">
+              {% endif %}
+            </h4> &emsp;         
             {% if question.OPTION_ANS == question.OPTION1 %}
             <input type="radio"  id="{{question.ID}}_1" name="{{question.ID}}" value="{{question.OPTION1}}" checked="checked">
             {% else %}
@@ -90,7 +96,7 @@
             {% endif %}
             <label for="{{question.ID}}_4">{{question.OPTION4}}</label>&emsp;&emsp;&emsp;&emsp;
 
-            <p>&ensp;&ensp;&nbsp;Correct Answer:  {{ question.ANSWER }}</p>
+            <p style="color: purple;">&ensp;&ensp;&nbsp;Correct Answer:  {{ question.ANSWER }}</p><br>
             
     {% endfor %} 
     <br>
