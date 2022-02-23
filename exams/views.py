@@ -1,3 +1,5 @@
+import cx_Oracle
+import config as cfg
 from django.shortcuts import redirect, render
 from django.db import connections
 from django.http import HttpResponse
@@ -23,14 +25,13 @@ def exam(request, exam_id):
             questions=dictfetchall(db)
             return render(request, 'exams/questions.html', {'questions':questions, 'exam_id': exam_id,'exam_detail':exam_detail,'creator': True, 'participated': False,'forumid':forumid})  
     
-        db.execute('''SELECT * 
-        FROM "EXAM" JOIN  "CONTENT" ON ("EXAM"."CONTENT_ID"="CONTENT"."ID")
-        JOIN "Course" ON ("CONTENT"."COURSE_ID"="Course"."ID")
-        JOIN "COURSE_REGISTRATION" 
-        ON ("COURSE_REGISTRATION"."COURSE_ID"="Course"."ID" AND "COURSE_REGISTRATION"."STUDENT_ID"=%s)''', [request.session['id']])
-        registered=dictfetchall(db)
-        if not registered:
-           return render(request, 'authentication/not_registered.html', {'role':request.session['role']})  
+        with cx_Oracle.connect(cfg.username,cfg.password,cfg.dsn,encoding=cfg.encoding) as connection:
+            with connection.cursor() as cursor:
+                registered = cursor.var(int)
+                cursor.callproc('CHECK_EXAM_REGISTRATION',
+                                [request.session['id'], registered])
+                if not registered.getvalue():
+                    return render(request, 'authentication/not_registered.html', {'role':request.session['role']})  
         
         course_registration_id=get_course_registration_id(request.session['id'], exam_id)
 
@@ -79,15 +80,12 @@ def add_ques(request,exam_id):
 
 
 def get_course_registration_id(student_id, exam_id):
-    with connections['coursora_db'].cursor() as db:
-        db.execute('''SELECT COURSE_REGISTRATION.ID
-            FROM COURSE_REGISTRATION, CONTENT, EXAM
-            WHERE COURSE_REGISTRATION.STUDENT_ID=%s 
-            AND COURSE_REGISTRATION.COURSE_ID=CONTENT.COURSE_ID 
-            AND CONTENT.ID=EXAM.CONTENT_ID
-            AND EXAM.ID=%s''', 
-            [student_id, exam_id])
-        return dictfetchone(db)['ID']
+    with cx_Oracle.connect(cfg.username,cfg.password,cfg.dsn,encoding=cfg.encoding) as connection:
+        with connection.cursor() as cursor:
+            course_registration_id = cursor.var(int)
+            cursor.callproc('GET_COURSE_REGISTRATION_ID',[student_id, exam_id, course_registration_id])
+            return course_registration_id
+    
 
 def get_questions(exam_id):
     with connections['coursora_db'].cursor() as db:

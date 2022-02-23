@@ -146,4 +146,5 @@ def accept_instructor(request,instructor_id):
                   where "ID"=%s''', ['approved', instructor_id])
     
     return redirect('/coursora/profile/')
+
     
