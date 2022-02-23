@@ -8,6 +8,8 @@ from util.dictfunc import multiget
 from util.fetcher import *
 
 def exam(request, exam_id):
+    if 'id' not in request.session:
+        return HttpResponse('Please login to continue')
     with connections['coursora_db'].cursor() as db:
         db.execute('''SELECT * from "EXAM" where "ID"=%s''',[exam_id])
         lec_id=dictfetchone(db)['CONTENT_ID']
@@ -29,14 +31,14 @@ def exam(request, exam_id):
             with connection.cursor() as cursor:
                 registered = cursor.var(int)
                 cursor.callproc('CHECK_EXAM_REGISTRATION',
-                                [request.session['id'], registered])
+                                [request.session['id'], exam_id, registered])
                 if not registered.getvalue():
                     return render(request, 'authentication/not_registered.html', {'role':request.session['role']})  
         
         course_registration_id=get_course_registration_id(request.session['id'], exam_id)
-
-        db.execute('''SELECT * FROM PARTICIPATES WHERE COURSE_REGISTRATION_ID=%s 
-        AND EXAM_ID=%s''', [course_registration_id, exam_id])
+        # print(course_registration_id)
+        db.execute('''SELECT * FROM PARTICIPATES WHERE COURSE_REGISTRATION_ID=GET_COURSE_REGISTRATION_ID(%s, %s) 
+        AND EXAM_ID=%s''', [request.session['id'], exam_id, exam_id])
         participated=dictfetchall(db)
         questions=get_questions(exam_id)
         if participated:
@@ -80,11 +82,15 @@ def add_ques(request,exam_id):
 
 
 def get_course_registration_id(student_id, exam_id):
-    with cx_Oracle.connect(cfg.username,cfg.password,cfg.dsn,encoding=cfg.encoding) as connection:
-        with connection.cursor() as cursor:
-            course_registration_id = cursor.var(int)
-            cursor.callproc('GET_COURSE_REGISTRATION_ID',[student_id, exam_id, course_registration_id])
-            return course_registration_id
+    with connections['coursora_db'].cursor() as db:
+        db.execute('''SELECT COURSE_REGISTRATION.ID
+            FROM COURSE_REGISTRATION, CONTENT, EXAM
+            WHERE COURSE_REGISTRATION.STUDENT_ID=%s 
+            AND COURSE_REGISTRATION.COURSE_ID=CONTENT.COURSE_ID 
+            AND CONTENT.ID=EXAM.CONTENT_ID
+            AND EXAM.ID=%s''', 
+            [student_id, exam_id])
+        return dictfetchone(db)['ID']
     
 
 def get_questions(exam_id):
