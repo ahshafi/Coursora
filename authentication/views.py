@@ -26,7 +26,7 @@ def register_student(request):
             email_collision=dictfetchone(db)['CNT']
             if email_collision:
                 messages.info(request, 'Email already registered')
-                return render(request, 'authentication/register_teacher.html')
+                return render(request, 'authentication/register_student.html')
             
             db.execute('''INSERT INTO "User"("Name", "Email", "Password","Institution")
                         VALUES(%s, %s, %s,%s)''', [name, email, password,inst])
@@ -53,13 +53,13 @@ def register_teacher(request):
             name_collision=dictfetchone(db)['CNT']
             if name_collision:
                 messages.info(request, 'User already name taken')
-                return render(request, 'authentication/register_student.html')
+                return render(request, 'authentication/register_teacher.html')
 
             db.execute('''SELECT COUNT(*) CNT FROM "User" WHERE "Email"=%s''', [email])
             email_collision=dictfetchone(db)['CNT']
             if email_collision:
                 messages.info(request, 'Email already registered')
-                return render(request, 'authentication/register_student.html')
+                return render(request, 'authentication/register_teacher.html')
 
 
             db.execute('''INSERT INTO "User"("Name", "Email", "Password","Institution")

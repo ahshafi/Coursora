@@ -1,3 +1,5 @@
+import cx_Oracle
+import config as cfg
 from django.shortcuts import redirect, render
 from django.db import connections
 from django.http import HttpResponse
@@ -6,6 +8,8 @@ from util.dictfunc import multiget
 from util.fetcher import *
 
 def exam(request, exam_id):
+    if 'id' not in request.session:
+        return HttpResponse('Please login to continue')
     with connections['coursora_db'].cursor() as db:
         db.execute('''SELECT * from "EXAM" where "ID"=%s''',[exam_id])
         lec_id=dictfetchone(db)['CONTENT_ID']
@@ -23,19 +27,18 @@ def exam(request, exam_id):
             questions=dictfetchall(db)
             return render(request, 'exams/questions.html', {'questions':questions, 'exam_id': exam_id,'exam_detail':exam_detail,'creator': True, 'participated': False,'forumid':forumid})  
     
-        db.execute('''SELECT * 
-        FROM "EXAM" JOIN  "CONTENT" ON ("EXAM"."CONTENT_ID"="CONTENT"."ID")
-        JOIN "Course" ON ("CONTENT"."COURSE_ID"="Course"."ID")
-        JOIN "COURSE_REGISTRATION" 
-        ON ("COURSE_REGISTRATION"."COURSE_ID"="Course"."ID" AND "COURSE_REGISTRATION"."STUDENT_ID"=%s)''', [request.session['id']])
-        registered=dictfetchall(db)
-        if not registered:
-           return render(request, 'authentication/not_registered.html', {'role':request.session['role']})  
+        with cx_Oracle.connect(cfg.username,cfg.password,cfg.dsn,encoding=cfg.encoding) as connection:
+            with connection.cursor() as cursor:
+                registered = cursor.var(int)
+                cursor.callproc('CHECK_EXAM_REGISTRATION',
+                                [request.session['id'], exam_id, registered])
+                if not registered.getvalue():
+                    return render(request, 'authentication/not_registered.html', {'role':request.session['role']})  
         
         course_registration_id=get_course_registration_id(request.session['id'], exam_id)
-
-        db.execute('''SELECT * FROM PARTICIPATES WHERE COURSE_REGISTRATION_ID=%s 
-        AND EXAM_ID=%s''', [course_registration_id, exam_id])
+        # print(course_registration_id)
+        db.execute('''SELECT * FROM PARTICIPATES WHERE COURSE_REGISTRATION_ID=GET_COURSE_REGISTRATION_ID(%s, %s) 
+        AND EXAM_ID=%s''', [request.session['id'], exam_id, exam_id])
         participated=dictfetchall(db)
         questions=get_questions(exam_id)
         if participated:
@@ -88,6 +91,7 @@ def get_course_registration_id(student_id, exam_id):
             AND EXAM.ID=%s''', 
             [student_id, exam_id])
         return dictfetchone(db)['ID']
+    
 
 def get_questions(exam_id):
     with connections['coursora_db'].cursor() as db:
