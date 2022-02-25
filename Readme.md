@@ -9,7 +9,7 @@ Coursora is an online learning platform where students can widen their knowledge
 
     pip install django
     
-### Clone the project into the directory
+### Clone the project into a directory
     git clone https://github.com/ahshafi/Coursora.git .
     
 ### Run the server
