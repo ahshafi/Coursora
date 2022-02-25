@@ -1,5 +1,5 @@
 # Coursora
-Coursora is an online learnign platform where students can widen their knowledge on different topics and teachers can spread their knowledge via different courses.
+Coursora is an online learning platform where students can widen their knowledge on different topics and teachers can spread their knowledge via different courses.
 
 ## Follow the steps stated below to run the server
 
