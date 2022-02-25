@@ -33,7 +33,7 @@ def course_reg(request,course_id):
 
 def show_contentlist(request,course_id):
     if len(request. session. keys()) == 0 :
-        return render(request,'authentication/not_registered.html',{'role':'none'})
+        return redirect('http://127.0.0.1:8000/coursora/login/')
 
     creator = 0 # if a teacher has not entered to create a lecture
     with connections['coursora_db'].cursor() as c:
